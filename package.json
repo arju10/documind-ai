@@ -1,0 +1,26 @@
+{
+  "name": "documind-ai",
+  "version": "1.0.0",
+  "description": "> Upload any PDF and chat with it using AI.   > Powered by RAG, Groq Llama 3, ChromaDB and fully written in TypeScript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arju10/documind-ai.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/arju10/documind-ai/issues"
+  },
+  "homepage": "https://github.com/arju10/documind-ai#readme",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
+    "prettier": "^3.8.3"
+  }
+}
