@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  client:
+    build: ./client
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:5000
+
+  server:
+    build: ./server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    env_file:
+      - ./server/.env
+    depends_on:
+      - chromadb
+
+  chromadb:
+    image: chromadb/chroma:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+
+volumes:
+  chroma_data:
