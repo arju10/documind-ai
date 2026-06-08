@@ -110,8 +110,6 @@ code {
   background: var(--code-bg);
 } */
 
-
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
