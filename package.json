@@ -5,8 +5,28 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\" --ignore-path .prettierignore",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\" --ignore-path .prettierignore",
+    "format:client": "cd client && npm run format",
+    "format:server": "cd server && npm run format",
+    "format:all": "npm run format:client && npm run format:server && npm run format",
+    "lint:client": "cd client && npm run lint",
+    "lint:server": "cd server && npm run lint",
+    "lint": "npm run lint:client && npm run lint:server",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "client/src/**/*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix --max-warnings 0"
+    ],
+    "server/src/**/*.ts": [
+      "prettier --write",
+      "eslint --fix --max-warnings 0"
+    ],
+    "**/*.{json,css,md}": [
+      "prettier --write"
+    ]
   },
   "repository": {
     "type": "git",

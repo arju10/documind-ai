@@ -21,5 +21,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     'no-console': 'off',
     'prettier/prettier': 'error',
+    'padding-line-between-statements': 'off',
+
   },
 };
