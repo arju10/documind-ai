@@ -4,6 +4,7 @@
 > Powered by RAG, Groq Llama 3, ChromaDB and fully written in TypeScript.
 
 🚀 **Live Demo:** _coming soon_
+🚀 **Postman Collection:** https://www.postman.com/speeding-eclipse-199364/workspace/public/collection/15474628-56436708-c6da-48bc-b080-8a083015f1bb?action=share&creator=15474628&active-environment=15474628-9b87d6f1-b761-4959-9ed3-6afc59a9d89b
 
 ## Features
 

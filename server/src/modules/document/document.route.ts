@@ -6,7 +6,6 @@ const router: Router = Router();
 
 router.post('/upload', upload.single('pdf'), uploadDocument);
 router.get('/', getDocuments);
-
 router.delete('/:id', deleteDocument);
 
 export default router;
