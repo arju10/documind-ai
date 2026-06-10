@@ -1,6 +1,11 @@
 import { InferenceClient } from '@huggingface/inference';
 
 const hf = new InferenceClient(process.env.HF_API_KEY);
+
+// TEMPORARY DEBUG — remove after fixing
+console.log('[EMBED] HF_API_KEY loaded:', process.env.HF_API_KEY ? 'YES' : 'NO - KEY IS MISSING');
+console.log('[EMBED] Key preview:', process.env.HF_API_KEY?.substring(0, 8) + '...');
+
 const EMBEDDING_MODEL = 'sentence-transformers/all-MiniLM-L6-v2';
 
 // DEBUG: Log embedding model being used

@@ -3,6 +3,7 @@ import { createRequire } from 'module';
 import { v4 as uuidv4 } from 'uuid';
 import DocumentModel from './document.model';
 import { IDocument, ITextChunk, IUploadDocumentResponse } from './document.interface';
+import { storeChunksInChroma, deleteChromaCollection } from '../../utils/chromadb.utils';
 
 const require = createRequire(import.meta.url);
 const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.mjs');
@@ -136,6 +137,13 @@ export const uploadDocumentService = async (
     // DEBUG: Confirm chunks before saving
     // console.log('[UPLOAD] Chunks created:', chunks.length);
 
+    // Store chunks in ChromaDB as vectors
+    await storeChunksInChroma(collectionName, chunks);
+
+    // // DEBUG: Confirm ChromaDB storage
+    // console.log('[UPLOAD] Chunks stored in ChromaDB');
+
+    // Update document status in MongoDB to ready
     await DocumentModel.findByIdAndUpdate(document._id, {
       totalChunks: chunks.length,
       status: 'ready',
@@ -173,6 +181,15 @@ export const getDocumentsService = async (userId: string): Promise<IDocument[]> 
 export const deleteDocumentService = async (id: string, userId: string): Promise<IDocument | null> => {
   // DEBUG: Log delete request
   // console.log('[DELETE] Deleting document id:', id, 'for userId:', userId);
+  const document = await DocumentModel.findOneAndDelete({ _id: id, userId });
 
-  return DocumentModel.findOneAndDelete({ _id: id, userId });
+  // Delete ChromaDB collection too
+  if (document) {
+    await deleteChromaCollection(document.collectionName);
+
+    // DEBUG: Confirm ChromaDB collection deleted
+    // console.log('[DELETE] ChromaDB collection deleted:', document.collectionName);
+  }
+
+  return document;
 };
