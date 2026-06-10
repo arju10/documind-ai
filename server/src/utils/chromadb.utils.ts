@@ -14,9 +14,10 @@ export const storeChunksInChroma = async (collectionName: string, chunks: ITextC
   // console.log('[CHROMA] Storing chunks in collection:', collectionName);
   // console.log('[CHROMA] Total chunks to store:', chunks.length);
 
-  // 1. Get or create collection
+  // 1. Get or create collection — pass embeddingFunction: null since we provide our own
   const collection = await chromaClient.getOrCreateCollection({
     name: collectionName,
+    embeddingFunction: null as never,
     metadata: { 'hnsw:space': 'cosine' },
   });
 
@@ -68,9 +69,10 @@ export const searchSimilarChunks = async (
   // 1. Generate query embedding
   const queryEmbedding = await generateEmbedding(query);
 
-  // 2. Search ChromaDB
+  // 2. Get collection — pass embeddingFunction: null since we provide our own
   const collection = await chromaClient.getCollection({
     name: collectionName,
+    embeddingFunction: null as never,
   });
 
   const results = await collection.query({
@@ -103,6 +105,6 @@ export const deleteChromaCollection = async (collectionName: string): Promise<vo
     // console.log('[CHROMA] Collection deleted:', collectionName);
   } catch {
     // Collection might not exist — that's ok
-    // console.warn('[CHROMA] Collection not found for deletion:', collectionName);
+    // console.warn('[CHROMA] Collection not found:', collectionName);
   }
 };
