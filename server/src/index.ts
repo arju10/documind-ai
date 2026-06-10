@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import routes from './routes/index.js';
+import { testChromaConnection } from './config/chromadb.js';
 
 dotenv.config();
 
@@ -26,7 +27,9 @@ app.get('/health', (req: Request, res: Response) => {
   });
 });
 
+// Start server after DB and ChromaDB connections are established
 connectDB();
+testChromaConnection();
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
