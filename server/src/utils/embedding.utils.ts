@@ -36,21 +36,25 @@ export const generateEmbedding = async (text: string): Promise<number[]> => {
   }
 };
 
-export const generateEmbeddingsBatch = async (texts: string[], batchSize: number = 10): Promise<number[][]> => {
+export const generateEmbeddingsBatch = async (
+  texts: string[],
+  batchSize: number = 3, // ← reduced from 10 to 3
+): Promise<number[][]> => {
   const embeddings: number[][] = [];
 
   // DEBUG: Log batch details
-  // console.log('[EMBED] Processing batch of', texts.length, 'texts');
+  // console.log('[EMBED] Processing', texts.length, 'texts sequentially');
 
-  for (let i = 0; i < texts.length; i += batchSize) {
-    const batch = texts.slice(i, i + batchSize);
+  for (let i = 0; i < texts.length; i++) {
+    // Process ONE at a time — prevents CPU overload
+    const embedding = await generateEmbedding(texts[i]);
+    embeddings.push(embedding);
 
-    // DEBUG: Log batch progress
-    // console.log(`[EMBED] Batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(texts.length / batchSize)}`);
+    // Small delay between calls to let CPU breathe
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
-    const batchEmbeddings = await Promise.all(batch.map((text) => generateEmbedding(text)));
-
-    embeddings.push(...batchEmbeddings);
+    // DEBUG: Log progress every 5 chunks
+    // if (i % 5 === 0) console.log(`[EMBED] Progress: ${i + 1}/${texts.length}`);
   }
 
   // DEBUG: Log total embeddings generated

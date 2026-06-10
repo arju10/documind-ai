@@ -17,7 +17,11 @@ const extractTextFromPDF = async (filePath: string): Promise<string> => {
   // DEBUG: Check file was read correctly
   // console.log('[PDF] File buffer size:', fileBuffer.length);
 
-  const loadingTask = pdfjsLib.getDocument({ data: uint8Array });
+  const loadingTask = pdfjsLib.getDocument({
+    data: uint8Array,
+    verbosity: 0, //  suppress all warnings
+  });
+
   const pdf = await loadingTask.promise;
 
   // DEBUG: Check how many pages were detected
@@ -132,7 +136,10 @@ export const uploadDocumentService = async (
       throw new Error('Could not extract text from PDF');
     }
 
-    const chunks = chunkText(rawText, 500, 50);
+    const chunks = chunkText(rawText, 1000, 100);
+
+    // DEBUG: Log chunking details
+    // console.log(`[UPLOAD] Processing ${chunks.length} chunks — please wait...`);
 
     // DEBUG: Confirm chunks before saving
     // console.log('[UPLOAD] Chunks created:', chunks.length);
