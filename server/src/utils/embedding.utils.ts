@@ -1,33 +1,37 @@
-import { InferenceClient } from '@huggingface/inference';
+const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
+const EMBEDDING_MODEL = 'nomic-embed-text';
 
-const hf = new InferenceClient(process.env.HF_API_KEY);
-
-// TEMPORARY DEBUG — remove after fixing
-console.log('[EMBED] HF_API_KEY loaded:', process.env.HF_API_KEY ? 'YES' : 'NO - KEY IS MISSING');
-console.log('[EMBED] Key preview:', process.env.HF_API_KEY?.substring(0, 8) + '...');
-
-const EMBEDDING_MODEL = 'sentence-transformers/all-MiniLM-L6-v2';
-
-// DEBUG: Log embedding model being used
-// console.log('[EMBED] Using model:', EMBEDDING_MODEL);
+// DEBUG: Log Ollama config
+// console.log('[EMBED] Ollama URL:', OLLAMA_URL);
+// console.log('[EMBED] Model:', EMBEDDING_MODEL);
 
 export const generateEmbedding = async (text: string): Promise<number[]> => {
   try {
-    // DEBUG: Log text length being embedded
+    // DEBUG: Log text length
     // console.log('[EMBED] Generating embedding for text length:', text.length);
 
-    const response = await hf.featureExtraction({
-      model: EMBEDDING_MODEL,
-      inputs: text,
+    const response = await fetch(`${OLLAMA_URL}/api/embeddings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: EMBEDDING_MODEL,
+        prompt: text,
+      }),
     });
 
-    // DEBUG: Log embedding dimension
-    // console.log('[EMBED] Embedding dimension:', (response as number[]).length);
+    if (!response.ok) {
+      throw new Error(`Ollama error: ${response.status} ${response.statusText}`);
+    }
 
-    return response as number[];
+    const data = (await response.json()) as { embedding: number[] };
+
+    // DEBUG: Log embedding dimension
+    // console.log('[EMBED] Embedding dimension:', data.embedding.length);
+
+    return data.embedding;
   } catch (error) {
-    // DEBUG: Log embedding error
-    // console.error('[EMBED] Error generating embedding:', error);
+    // DEBUG: Log error
+    // console.error('[EMBED] Error:', error);
     throw new Error(`Failed to generate embedding: ${error}`);
   }
 };
@@ -41,7 +45,7 @@ export const generateEmbeddingsBatch = async (texts: string[], batchSize: number
   for (let i = 0; i < texts.length; i += batchSize) {
     const batch = texts.slice(i, i + batchSize);
 
-    // DEBUG: Log current batch progress
+    // DEBUG: Log batch progress
     // console.log(`[EMBED] Batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(texts.length / batchSize)}`);
 
     const batchEmbeddings = await Promise.all(batch.map((text) => generateEmbedding(text)));

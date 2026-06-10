@@ -20,6 +20,7 @@ services:
       - ./server/.env
     depends_on:
       - chromadb
+      - ollama
 
   chromadb:
     image: chromadb/chroma:latest
@@ -28,5 +29,13 @@ services:
     volumes:
       - chroma_data:/chroma/chroma
 
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
 volumes:
   chroma_data:
+  ollama_data:
