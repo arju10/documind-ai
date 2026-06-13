@@ -23,6 +23,7 @@ const ChatWindow = ({ document }: ChatWindowProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Load chat history when document changes
   useEffect(() => {
     const loadHistory = async () => {
       setIsLoadingHistory(true);
@@ -33,7 +34,7 @@ const ChatWindow = ({ document }: ChatWindowProps) => {
           setMessages(response.data.messages);
         }
       } catch {
-        // No history yet
+        // No history yet — silent
       } finally {
         setIsLoadingHistory(false);
       }
@@ -41,6 +42,7 @@ const ChatWindow = ({ document }: ChatWindowProps) => {
     loadHistory();
   }, [document._id]);
 
+  // Auto scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
@@ -78,8 +80,9 @@ const ChatWindow = ({ document }: ChatWindowProps) => {
         };
         setMessages((prev) => [...prev, assistantMessage]);
       }
-    } catch {
-      toast.error('Failed to get answer. Please try again.');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to get answer. Please try again.';
+      toast.error(message);
       // Remove the user message on error
       setMessages((prev) => prev.slice(0, -1));
     } finally {
@@ -163,6 +166,8 @@ const ChatWindow = ({ document }: ChatWindowProps) => {
             {messages.map((message, index) => (
               <ChatMessage key={index} message={message} />
             ))}
+
+            {/* Loading indicator */}
             {isLoading && (
               <div className="flex justify-start mb-4">
                 <div className="flex items-end gap-2">
@@ -188,6 +193,7 @@ const ChatWindow = ({ document }: ChatWindowProps) => {
                 </div>
               </div>
             )}
+
             <div ref={messagesEndRef} />
           </>
         )}

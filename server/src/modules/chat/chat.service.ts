@@ -44,18 +44,23 @@ export const askQuestionService = async (input: IAskQuestionInput): Promise<IAsk
   // console.log('[RAG] Document found:', document.originalName);
 
   // 2. Search ChromaDB for relevant chunks
-  const searchResults = await searchSimilarChunks(
-    document.collectionName,
-    question,
-    3, // top 3 most relevant chunks
-  );
+  let searchResults;
+  try {
+    searchResults = await searchSimilarChunks(
+      document.collectionName,
+      question,
+      3, // top 3 most relevant chunks
+    );
+  } catch {
+    throw new Error('This document was uploaded before embeddings were set up. Please delete and re-upload it.');
+  }
 
   // DEBUG: Log search results
   // console.log('[RAG] Search results:', searchResults.length);
   // console.log('[RAG] Top result score:', searchResults[0]?.score);
 
-  if (searchResults.length === 0) {
-    throw new Error('No relevant content found in document');
+  if (!searchResults || searchResults.length === 0) {
+    throw new Error('No relevant content found. Please delete and re-upload this document.');
   }
 
   // 3. Build context from search results
