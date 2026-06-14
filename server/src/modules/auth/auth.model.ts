@@ -22,32 +22,34 @@ const UserSchema = new Schema<IUser>(
       minlength: 6,
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    toJSON: {
+      transform: (_doc, ret) => {
+        const obj = ret as Record<string, unknown>;
+        delete obj['password'];
+        return obj;
+      },
+    },
+  },
 );
 
 // Hash password before saving
-UserSchema.pre('save', async function (this: IUser, next: (err?: Error) => void) {
-  if (!this.isModified('password')) {
-    next();
+UserSchema.pre('save', async function () {
+  const user = this as IUser;
+
+  if (!user.isModified('password')) {
     return;
   }
 
   const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-} as never);
+  user.password = await bcrypt.hash(user.password, salt);
+});
 
 // Compare password method
-UserSchema.methods.comparePassword = async function (this: IUser, candidatePassword: string): Promise<boolean> {
-  return bcrypt.compare(candidatePassword, this.password);
+UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
+  const user = this as IUser;
+  return bcrypt.compare(candidatePassword, user.password);
 };
-
-// Never return password in JSON responses
-UserSchema.set('toJSON', {
-  transform: (_doc: unknown, ret: Record<string, unknown>) => {
-    delete ret['password'];
-    return ret;
-  },
-} as never);
 
 export default mongoose.model<IUser>('User', UserSchema);
