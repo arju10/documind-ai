@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { AuthRequest } from '../../middleware/auth.middleware';
 import { uploadDocumentService, getDocumentsService, deleteDocumentService } from './document.service';
 import { sendSuccess, sendError } from '../../utils/response.utils';
 
@@ -10,7 +11,7 @@ export const uploadDocument = async (req: Request, res: Response): Promise<void>
     return;
   }
 
-  const userId = (req.headers['x-user-id'] as string) || 'temp-user-123';
+  const userId = (req as AuthRequest).userId as string;
 
   try {
     const result = await uploadDocumentService(file, userId);
@@ -22,7 +23,7 @@ export const uploadDocument = async (req: Request, res: Response): Promise<void>
 };
 
 export const getDocuments = async (req: Request, res: Response): Promise<void> => {
-  const userId = (req.headers['x-user-id'] as string) || 'temp-user-123';
+  const userId = (req as AuthRequest).userId as string;
 
   try {
     const documents = await getDocumentsService(userId);
@@ -34,7 +35,7 @@ export const getDocuments = async (req: Request, res: Response): Promise<void> =
 
 export const deleteDocument = async (req: Request, res: Response): Promise<void> => {
   const id = req.params['id'] as string;
-  const userId = (req.headers['x-user-id'] as string) || 'temp-user-123';
+  const userId = (req as AuthRequest).userId as string;
 
   try {
     const document = await deleteDocumentService(id, userId);
