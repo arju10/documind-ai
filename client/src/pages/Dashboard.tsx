@@ -5,12 +5,14 @@ import { getDocuments } from '../services/api';
 import DocumentUpload from '../components/document/DocumentUpload';
 import DocumentList from '../components/document/DocumentList';
 import ChatWindow from '../components/chat/ChatWindow';
+import { useAuth } from '../context/AuthContext';
 
 const App = () => {
   const [documents, setDocuments] = useState<IDocument[]>([]);
   const [selectedDocument, setSelectedDocument] = useState<IDocument | null>(null);
   const [isLoadingDocuments, setIsLoadingDocuments] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     const loadDocuments = async () => {
@@ -231,6 +233,23 @@ const App = () => {
             </button>
           </div>
         )}
+        {/* Footer */}
+        <div className="px-4 py-3 border-t border-gray-100">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                {user?.name?.charAt(0).toUpperCase()}
+              </div>
+              <p className="text-xs font-medium text-gray-700 truncate">{user?.name}</p>
+            </div>
+            <button
+              onClick={logout}
+              className="text-xs text-gray-400 hover:text-red-500 transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
       </main>
     </div>
   );
