@@ -3,17 +3,34 @@ import type { IDocument, IChat, IAskResponse, IApiResponse } from '../types';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// Temporary userId until auth is built
-const TEMP_USER_ID = 'temp-user-123';
-
 const api = axios.create({
   baseURL: `${BASE_URL}/api`,
-  headers: {
-    'x-user-id': TEMP_USER_ID,
-  },
 });
 
-// --------- Document APIs ---------------------------------
+// Attach JWT token to every request
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('documind_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Handle 401 errors — redirect to login
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('documind_token');
+      localStorage.removeItem('documind_user');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  },
+);
+
+// ------ Document APIs --------------------------------
+
 export const uploadDocument = async (file: File): Promise<IApiResponse<IDocument>> => {
   const formData = new FormData();
   formData.append('pdf', file);
@@ -34,7 +51,8 @@ export const deleteDocument = async (id: string): Promise<IApiResponse<null>> =>
   return response.data;
 };
 
-// --------- Chat APIs ---------------------------------
+// ------ Chat APIs -------------------------------
+
 export const askQuestion = async (
   documentId: string,
   question: string,
