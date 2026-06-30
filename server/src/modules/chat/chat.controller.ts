@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { askQuestionService, getChatHistoryService, getAllChatsService, deleteChatService } from './chat.service';
 import { sendSuccess, sendError } from '../../utils/response.utils';
+import { AuthRequest } from '../../middleware/auth.middleware';
 
 // POST /api/chat/ask
 export const askQuestion = async (req: Request, res: Response): Promise<void> => {
@@ -8,7 +9,8 @@ export const askQuestion = async (req: Request, res: Response): Promise<void> =>
     documentId: string;
     question: string;
   };
-  const userId = (req.headers['x-user-id'] as string) || 'temp-user-123';
+  // const userId = (req.headers['x-user-id'] as string) || 'temp-user-123';
+  const userId = (req as AuthRequest).userId as string;
 
   // DEBUG: Log incoming request
   // console.log('[CONTROLLER] Ask question:', question);
@@ -35,7 +37,8 @@ export const askQuestion = async (req: Request, res: Response): Promise<void> =>
 // GET /api/chat/history/:documentId
 export const getChatHistory = async (req: Request, res: Response): Promise<void> => {
   const documentId = req.params['documentId'] as string;
-  const userId = (req.headers['x-user-id'] as string) || 'temp-user-123';
+  // const userId = (req.headers['x-user-id'] as string) || 'temp-user-123';
+  const userId = (req as AuthRequest).userId as string;
 
   try {
     const chat = await getChatHistoryService(userId, documentId);
@@ -47,7 +50,8 @@ export const getChatHistory = async (req: Request, res: Response): Promise<void>
 
 // GET /api/chat
 export const getAllChats = async (req: Request, res: Response): Promise<void> => {
-  const userId = (req.headers['x-user-id'] as string) || 'temp-user-123';
+  // const userId = (req.headers['x-user-id'] as string) || 'temp-user-123';
+  const userId = (req as AuthRequest).userId as string;
 
   try {
     const chats = await getAllChatsService(userId);
@@ -60,7 +64,8 @@ export const getAllChats = async (req: Request, res: Response): Promise<void> =>
 // DELETE /api/chat/:chatId
 export const deleteChat = async (req: Request, res: Response): Promise<void> => {
   const chatId = req.params['chatId'] as string;
-  const userId = (req.headers['x-user-id'] as string) || 'temp-user-123';
+  // const userId = (req.headers['x-user-id'] as string) || 'temp-user-123';
+  const userId = (req as AuthRequest).userId as string;
 
   try {
     const chat = await deleteChatService(chatId, userId);

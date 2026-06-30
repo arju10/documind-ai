@@ -11,7 +11,7 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
   const authHeader = req.headers.authorization;
 
   // DEBUG: Log auth header
-  // console.log('[AUTH MIDDLEWARE] Header:', authHeader);
+  // console.log('[AUTH MIDDLEWARE] Header received:', authHeader);
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     sendError(res, 'No token provided', 401);
