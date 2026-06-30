@@ -55,7 +55,10 @@ const App = () => {
     <div className="flex h-screen bg-gray-100 overflow-hidden">
       {/* Mobile overlay */}
       {isSidebarOpen && (
-        <div className="fixed inset-0 bg-black/40 z-20 lg:hidden" onClick={() => setIsSidebarOpen(false)} />
+        <div
+          className="fixed inset-0 bg-black/40 z-20 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
       )}
 
       {/* Sidebar */}
@@ -71,7 +74,12 @@ const App = () => {
         <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-4 h-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -92,7 +100,12 @@ const App = () => {
             className="lg:hidden p-1 rounded-lg hover:bg-gray-100 text-gray-400"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -105,8 +118,12 @@ const App = () => {
         {/* Document list */}
         <div className="flex-1 overflow-y-auto px-4 py-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Your Documents</p>
-            <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{documents.length}</span>
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+              Your Documents
+            </p>
+            <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+              {documents.length}
+            </span>
           </div>
           <DocumentList
             documents={documents}
@@ -119,7 +136,9 @@ const App = () => {
 
         {/* Footer */}
         <div className="px-4 py-3 border-t border-gray-100">
-          <p className="text-xs text-gray-400 text-center">Built with React + Node.js + RAG + Groq</p>
+          <p className="text-xs text-gray-400 text-center">
+            Built with React + Node.js + RAG + Groq
+          </p>
         </div>
       </aside>
 
@@ -127,14 +146,27 @@ const App = () => {
       <main className="flex-1 flex flex-col overflow-hidden min-w-0">
         {/* Mobile header */}
         <div className="lg:hidden flex items-center gap-3 px-4 py-3 bg-white border-b border-gray-200">
-          <button onClick={() => setIsSidebarOpen(true)} className="p-2 rounded-lg hover:bg-gray-100 text-gray-600">
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+          >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           </button>
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-md flex items-center justify-center">
-              <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-3.5 h-3.5 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -152,7 +184,12 @@ const App = () => {
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
             <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mb-6 shadow-xl">
-              <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-12 h-12 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -163,8 +200,8 @@ const App = () => {
             </div>
             <h2 className="text-2xl font-bold text-gray-800 mb-3">Welcome to DocuMind AI</h2>
             <p className="text-gray-500 text-sm max-w-sm leading-relaxed mb-8">
-              Upload a PDF document and ask questions. Get accurate AI-powered answers with source citations from your
-              document.
+              Upload a PDF document and ask questions. Get accurate AI-powered answers with source
+              citations from your document.
             </p>
 
             {/* Feature highlights */}

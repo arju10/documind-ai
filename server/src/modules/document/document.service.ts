@@ -185,7 +185,10 @@ export const getDocumentsService = async (userId: string): Promise<IDocument[]> 
   return DocumentModel.find({ userId }).sort({ createdAt: -1 }).select('-__v');
 };
 
-export const deleteDocumentService = async (id: string, userId: string): Promise<IDocument | null> => {
+export const deleteDocumentService = async (
+  id: string,
+  userId: string,
+): Promise<IDocument | null> => {
   // DEBUG: Log delete request
   // console.log('[DELETE] Deleting document id:', id, 'for userId:', userId);
   const document = await DocumentModel.findOneAndDelete({ _id: id, userId });

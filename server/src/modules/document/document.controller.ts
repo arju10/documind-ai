@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import { AuthRequest } from '../../middleware/auth.middleware';
-import { uploadDocumentService, getDocumentsService, deleteDocumentService } from './document.service';
+import {
+  uploadDocumentService,
+  getDocumentsService,
+  deleteDocumentService,
+} from './document.service';
 import { sendSuccess, sendError } from '../../utils/response.utils';
 
 export const uploadDocument = async (req: Request, res: Response): Promise<void> => {

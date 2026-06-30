@@ -20,7 +20,13 @@ const statusVariant = (status: IDocument['status']): 'green' | 'yellow' | 'red' 
   return 'red';
 };
 
-const DocumentList = ({ documents, selectedDocument, onSelect, onDelete, isLoading = false }: DocumentListProps) => {
+const DocumentList = ({
+  documents,
+  selectedDocument,
+  onSelect,
+  onDelete,
+  isLoading = false,
+}: DocumentListProps) => {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const handleDelete = async (e: React.MouseEvent, id: string) => {
@@ -51,7 +57,12 @@ const DocumentList = ({ documents, selectedDocument, onSelect, onDelete, isLoadi
     return (
       <div className="text-center py-10 text-gray-400">
         <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-          <svg className="w-7 h-7 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="w-7 h-7 text-gray-300"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -102,7 +113,9 @@ const DocumentList = ({ documents, selectedDocument, onSelect, onDelete, isLoadi
                 </p>
                 <div className="flex items-center gap-2 mt-1.5">
                   <Badge variant={statusVariant(doc.status)}>{doc.status}</Badge>
-                  {doc.status === 'ready' && <span className="text-xs text-gray-400">{doc.totalChunks} chunks</span>}
+                  {doc.status === 'ready' && (
+                    <span className="text-xs text-gray-400">{doc.totalChunks} chunks</span>
+                  )}
                 </div>
               </div>
             </div>

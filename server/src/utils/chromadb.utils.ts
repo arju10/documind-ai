@@ -9,7 +9,10 @@ export interface ISearchResult {
   score: number;
 }
 
-export const storeChunksInChroma = async (collectionName: string, chunks: ITextChunk[]): Promise<void> => {
+export const storeChunksInChroma = async (
+  collectionName: string,
+  chunks: ITextChunk[],
+): Promise<void> => {
   // DEBUG: Log storage details
   // console.log('[CHROMA] Storing chunks in collection:', collectionName);
   // console.log('[CHROMA] Total chunks to store:', chunks.length);

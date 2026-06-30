@@ -22,7 +22,9 @@ QUESTION: ${question}
 ANSWER:`;
 };
 
-export const askQuestionService = async (input: IAskQuestionInput): Promise<IAskQuestionResponse> => {
+export const askQuestionService = async (
+  input: IAskQuestionInput,
+): Promise<IAskQuestionResponse> => {
   const { documentId, question, userId } = input;
 
   // DEBUG: Log incoming question
@@ -52,7 +54,9 @@ export const askQuestionService = async (input: IAskQuestionInput): Promise<IAsk
       3, // top 3 most relevant chunks
     );
   } catch {
-    throw new Error('This document was uploaded before embeddings were set up. Please delete and re-upload it.');
+    throw new Error(
+      'This document was uploaded before embeddings were set up. Please delete and re-upload it.',
+    );
   }
 
   // DEBUG: Log search results
@@ -157,7 +161,10 @@ export const askQuestionService = async (input: IAskQuestionInput): Promise<IAsk
   }
 };
 
-export const getChatHistoryService = async (userId: string, documentId: string): Promise<IChat | null> => {
+export const getChatHistoryService = async (
+  userId: string,
+  documentId: string,
+): Promise<IChat | null> => {
   // DEBUG: Log fetch request
   // console.log('[CHAT] Fetching history for userId:', userId, 'documentId:', documentId);
 

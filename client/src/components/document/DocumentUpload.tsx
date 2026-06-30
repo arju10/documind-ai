@@ -74,7 +74,13 @@ const DocumentUpload = ({ onUploadSuccess }: DocumentUploadProps) => {
         }
       `}
     >
-      <input ref={fileInputRef} type="file" accept=".pdf" onChange={handleFileInput} className="hidden" />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".pdf"
+        onChange={handleFileInput}
+        className="hidden"
+      />
 
       {isUploading ? (
         <div className="flex flex-col items-center gap-3">

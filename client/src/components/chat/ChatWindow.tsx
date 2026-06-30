@@ -81,7 +81,8 @@ const ChatWindow = ({ document }: ChatWindowProps) => {
         setMessages((prev) => [...prev, assistantMessage]);
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to get answer. Please try again.';
+      const message =
+        error instanceof Error ? error.message : 'Failed to get answer. Please try again.';
       toast.error(message);
       // Remove the user message on error
       setMessages((prev) => prev.slice(0, -1));
@@ -109,7 +110,9 @@ const ChatWindow = ({ document }: ChatWindowProps) => {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-gray-800 truncate">{document.originalName}</p>
-            <p className="text-xs text-gray-400">{document.totalChunks} chunks indexed · Ready to answer questions</p>
+            <p className="text-xs text-gray-400">
+              {document.totalChunks} chunks indexed · Ready to answer questions
+            </p>
           </div>
           {/* Status dot */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -129,7 +132,12 @@ const ChatWindow = ({ document }: ChatWindowProps) => {
         ) : messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center">
             <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-10 h-10 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -138,7 +146,9 @@ const ChatWindow = ({ document }: ChatWindowProps) => {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Ask anything about this document</h3>
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">
+              Ask anything about this document
+            </h3>
             <p className="text-gray-400 text-sm mb-8 max-w-sm">
               I'll search through the document and give you accurate answers with source citations.
             </p>
@@ -237,7 +247,12 @@ const ChatWindow = ({ document }: ChatWindowProps) => {
             {isLoading ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : (
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-4 h-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -249,8 +264,10 @@ const ChatWindow = ({ document }: ChatWindowProps) => {
           </button>
         </div>
         <p className="text-xs text-gray-400 mt-2">
-          Press <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-500 text-xs">Enter</kbd> to send ·{' '}
-          <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-500 text-xs">Shift+Enter</kbd> for new line
+          Press <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-500 text-xs">Enter</kbd>{' '}
+          to send ·{' '}
+          <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-500 text-xs">Shift+Enter</kbd>{' '}
+          for new line
         </p>
       </div>
     </div>

@@ -35,7 +35,10 @@ export const deleteDocument = async (id: string): Promise<IApiResponse<null>> =>
 };
 
 // --------- Chat APIs ---------------------------------
-export const askQuestion = async (documentId: string, question: string): Promise<IApiResponse<IAskResponse>> => {
+export const askQuestion = async (
+  documentId: string,
+  question: string,
+): Promise<IApiResponse<IAskResponse>> => {
   const response = await api.post<IApiResponse<IAskResponse>>('/chat/ask', {
     documentId,
     question,

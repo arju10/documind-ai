@@ -1,5 +1,10 @@
 import { Request, Response } from 'express';
-import { askQuestionService, getChatHistoryService, getAllChatsService, deleteChatService } from './chat.service';
+import {
+  askQuestionService,
+  getChatHistoryService,
+  getAllChatsService,
+  deleteChatService,
+} from './chat.service';
 import { sendSuccess, sendError } from '../../utils/response.utils';
 import { AuthRequest } from '../../middleware/auth.middleware';
 

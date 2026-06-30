@@ -53,7 +53,12 @@ const ChatMessage = ({ message }: ChatMessageProps) => {
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
               {showSources ? 'Hide' : 'Show'} {message.sources.length} sources
             </button>
@@ -63,7 +68,9 @@ const ChatMessage = ({ message }: ChatMessageProps) => {
                 {message.sources.map((source, index) => (
                   <div key={index} className="bg-gray-50 border border-gray-200 rounded-lg p-3">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-medium text-gray-500">Page {source.pageNumber}</span>
+                      <span className="text-xs font-medium text-gray-500">
+                        Page {source.pageNumber}
+                      </span>
                       <span className={`text-xs font-medium ${getScoreColor(source.score)}`}>
                         {Math.round(source.score * 100)}% match
                       </span>
