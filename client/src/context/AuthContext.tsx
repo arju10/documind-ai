@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 
 interface IUser {
@@ -17,21 +17,28 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// ← Read from localStorage immediately — not in useEffect
+const getStoredToken = (): string | null => {
+  try {
+    return localStorage.getItem('documind_token');
+  } catch {
+    return null;
+  }
+};
+
+const getStoredUser = (): IUser | null => {
+  try {
+    const stored = localStorage.getItem('documind_user');
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+};
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<IUser | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-
-  // Load from memory on mount (in-memory only, no localStorage per artifact rules)
-  // For a real deployed app, we use localStorage here since this is outside the artifact sandbox
-  useEffect(() => {
-    const storedToken = localStorage.getItem('documind_token');
-    const storedUser = localStorage.getItem('documind_user');
-
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+  // ← Initialize directly from localStorage — no useEffect needed
+  const [user, setUser] = useState<IUser | null>(getStoredUser);
+  const [token, setToken] = useState<string | null>(getStoredToken);
 
   const login = (newToken: string, newUser: IUser) => {
     setToken(newToken);

@@ -131,7 +131,10 @@ const App = () => {
 
         {/* Upload */}
         <div className="px-4 py-4 border-b border-gray-100">
-          <DocumentUpload onUploadSuccess={handleUploadSuccess} />
+          <DocumentUpload
+            onUploadSuccess={handleUploadSuccess}
+            onUploadFail={handleUploadSuccess}
+          />
         </div>
 
         {/* Document list */}

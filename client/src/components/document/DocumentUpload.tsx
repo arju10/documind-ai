@@ -4,10 +4,11 @@ import { uploadDocument } from '../../services/api';
 import type { IDocument } from '../../types';
 
 interface DocumentUploadProps {
-  onUploadSuccess: () => void; //
+  onUploadSuccess: () => void;
+  onUploadFail: () => void;
 }
 
-const DocumentUpload = ({ onUploadSuccess }: DocumentUploadProps) => {
+const DocumentUpload = ({ onUploadSuccess, onUploadFail }: DocumentUploadProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -35,6 +36,7 @@ const DocumentUpload = ({ onUploadSuccess }: DocumentUploadProps) => {
       }
     } catch {
       toast.error('Failed to upload PDF. Please try again.', { id: toastId });
+      onUploadFail();
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
