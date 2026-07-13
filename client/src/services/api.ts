@@ -5,6 +5,7 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const api = axios.create({
   baseURL: `${BASE_URL}/api`,
+  timeout: 300000,
   headers: {
     'Cache-Control': 'no-cache',
     Pragma: 'no-cache',
@@ -46,6 +47,7 @@ export const uploadDocument = async (file: File): Promise<IApiResponse<IDocument
 
   const response = await api.post<IApiResponse<IDocument>>('/documents/upload', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 300000, // 5 minutes timeout for large files
   });
   return response.data;
 };
