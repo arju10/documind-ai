@@ -27,7 +27,7 @@ const Register = () => {
       if (response.success) {
         login(response.data.token, response.data.user);
         toast.success(`Welcome to DocuMind AI, ${response.data.user.name}!`);
-        navigate('/');
+        window.location.href = '/';
       }
     } catch (error) {
       const axiosError = error as { response?: { data?: { message?: string } } };

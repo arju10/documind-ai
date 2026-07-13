@@ -5,6 +5,10 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const api = axios.create({
   baseURL: `${BASE_URL}/api`,
+  headers: {
+    'Cache-Control': 'no-cache',
+    Pragma: 'no-cache',
+  },
 });
 
 // Attach JWT token to every request
@@ -13,6 +17,11 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  // Add timestamp to prevent caching
+  config.params = {
+    ...config.params,
+    _t: Date.now(),
+  };
   return config;
 });
 
@@ -29,7 +38,7 @@ api.interceptors.response.use(
   },
 );
 
-// ------ Document APIs --------------------------------
+// ── Document APIs ─────────────────────────────────────────
 
 export const uploadDocument = async (file: File): Promise<IApiResponse<IDocument>> => {
   const formData = new FormData();
@@ -51,7 +60,7 @@ export const deleteDocument = async (id: string): Promise<IApiResponse<null>> =>
   return response.data;
 };
 
-// ------ Chat APIs -------------------------------
+// ── Chat APIs ─────────────────────────────────────────────
 
 export const askQuestion = async (
   documentId: string,

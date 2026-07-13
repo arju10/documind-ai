@@ -4,7 +4,7 @@ import { uploadDocument } from '../../services/api';
 import type { IDocument } from '../../types';
 
 interface DocumentUploadProps {
-  onUploadSuccess: (document: IDocument) => void;
+  onUploadSuccess: () => void; //
 }
 
 const DocumentUpload = ({ onUploadSuccess }: DocumentUploadProps) => {
@@ -31,7 +31,7 @@ const DocumentUpload = ({ onUploadSuccess }: DocumentUploadProps) => {
       const response = await uploadDocument(file);
       if (response.success) {
         toast.success('PDF uploaded successfully!', { id: toastId });
-        onUploadSuccess(response.data);
+        onUploadSuccess();
       }
     } catch {
       toast.error('Failed to upload PDF. Please try again.', { id: toastId });

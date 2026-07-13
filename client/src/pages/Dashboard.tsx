@@ -32,13 +32,30 @@ const App = () => {
     loadDocuments();
   }, []);
 
-  const handleUploadSuccess = (document: IDocument) => {
-    setDocuments((prev) => [document, ...prev]);
-    if (document.status === 'ready') {
-      setSelectedDocument(document);
-      setIsSidebarOpen(false);
+  // const handleUploadSuccess = (document: IDocument) => {
+  //   setDocuments((prev) => [document, ...prev]);
+  //   if (document.status === 'ready') {
+  //     setSelectedDocument(document);
+  //     setIsSidebarOpen(false);
+  //   }
+  //   toast.success(`${document.originalName} is ready!`);
+  // };
+
+  const handleUploadSuccess = async () => {
+    try {
+      const response = await getDocuments();
+      if (response.success) {
+        setDocuments(response.data);
+        // Select the most recently uploaded document
+        const firstReady = response.data.find((d) => d.status === 'ready');
+        if (firstReady) {
+          setSelectedDocument(firstReady);
+          setIsSidebarOpen(false);
+        }
+      }
+    } catch {
+      toast.error('Failed to refresh documents');
     }
-    toast.success(`${document.originalName} is ready!`);
   };
 
   const handleDeleteDocument = (id: string) => {
