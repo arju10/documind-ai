@@ -136,7 +136,7 @@ export const uploadDocumentService = async (
       throw new Error('Could not extract text from PDF');
     }
 
-    const chunks = chunkText(rawText, 1000, 100);
+    const chunks = chunkText(rawText, 300, 30);
 
     // DEBUG: Log chunking details
     // console.log(`[UPLOAD] Processing ${chunks.length} chunks — please wait...`);

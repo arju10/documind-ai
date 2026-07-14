@@ -1,21 +1,30 @@
 const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
 const EMBEDDING_MODEL = 'nomic-embed-text';
+const MAX_CHUNK_LENGTH = 500; // ← max characters per embedding call
 
 // DEBUG: Log Ollama config
 // console.log('[EMBED] Ollama URL:', OLLAMA_URL);
 // console.log('[EMBED] Model:', EMBEDDING_MODEL);
 
+// Truncate text to prevent Ollama 500 errors on large chunks
+const truncateText = (text: string): string => {
+  if (text.length <= MAX_CHUNK_LENGTH) return text;
+  return text.substring(0, MAX_CHUNK_LENGTH);
+};
+
 export const generateEmbedding = async (text: string): Promise<number[]> => {
   try {
+    const truncated = truncateText(text);
+
     // DEBUG: Log text length
-    // console.log('[EMBED] Generating embedding for text length:', text.length);
+    // console.log('[EMBED] Original length:', text.length, 'Truncated:', truncated.length);
 
     const response = await fetch(`${OLLAMA_URL}/api/embeddings`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: EMBEDDING_MODEL,
-        prompt: text,
+        prompt: truncated,
       }),
     });
 
@@ -38,7 +47,7 @@ export const generateEmbedding = async (text: string): Promise<number[]> => {
 
 export const generateEmbeddingsBatch = async (
   texts: string[],
-  batchSize: number = 3, // ← reduced from 10 to 3
+  batchSize: number = 3,
 ): Promise<number[][]> => {
   const embeddings: number[][] = [];
 
@@ -46,7 +55,6 @@ export const generateEmbeddingsBatch = async (
   // console.log('[EMBED] Processing', texts.length, 'texts sequentially');
 
   for (let i = 0; i < texts.length; i++) {
-    // Process ONE at a time — prevents CPU overload
     const embedding = await generateEmbedding(texts[i]);
     embeddings.push(embedding);
 
